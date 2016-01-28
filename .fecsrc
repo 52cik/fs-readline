@@ -1,0 +1,12 @@
+{
+  "eslint": {
+    "env": {
+      "node": true,
+      "browser": true
+    },
+
+    "rules": {
+      "brace-style": [2, "1tbs", { "allowSingleLine": true }]
+    }
+  }
+}

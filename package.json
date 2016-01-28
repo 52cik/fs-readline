@@ -1,0 +1,28 @@
+{
+  "name": "fs-readline",
+  "version": "1.0.0",
+  "description": "造轮子系列 -- 文件流按行读取",
+  "main": "./index.js",
+  "scripts": {
+    "test": "mocha --require should --reporter spec",
+    "test-cov": "istanbul cover ./node_modules/.bin/_mocha",
+    "fecs": "fecs --reporter=baidu check index.js"
+  },
+  "author": "52cik",
+  "license": "MIT",
+  "devDependencies": {
+    "fecs": "^0.6.0-beta.3",
+    "iconv-lite": "^0.4.13",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.2",
+    "should": "^8.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/52cik/fs-readline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/52cik/fs-readline/issues"
+  },
+  "homepage": "https://github.com/52cik/fs-readline#readme"
+}
