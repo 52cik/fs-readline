@@ -25,13 +25,14 @@ function ReadLine(file, opts) {
     var maxLineLength = opts.maxLineLength || 8 * 1024; // 8k
     var lineBuffer = new Buffer(maxLineLength); // 行数据缓存, 超出 8k 的行只保留 8k 数据
     var lineSize = 0; // 行长度
+    var lineCount = 1; // 行号
 
     var input = self.input = fs.createReadStream(file, opts);
 
     input.on('data', function (chunk) {
         for (var i = 0, len = chunk.length; i < len; i++) {
             if (chunk[i] === 10) {
-                emitLine(lineSize);
+                emitLine(lineSize, lineCount++);
             } else if (chunk[i] === 13) {
                 // 忽略
             } else {
@@ -42,7 +43,7 @@ function ReadLine(file, opts) {
 
     input.on('end', function () {
         if (lineSize) {
-            emitLine(lineSize);
+            emitLine(lineSize, lineCount++);
         }
         self.emit('end');
     });
@@ -59,9 +60,9 @@ function ReadLine(file, opts) {
         self.emit('close');
     });
 
-    function emitLine(size) {
+    function emitLine(size, idx) {
         try {
-            self.emit('line', lineBuffer.slice(0, size));
+            self.emit('line', lineBuffer.slice(0, size), idx);
         } catch (e) {
             self.emit('error', e);
         } finally {

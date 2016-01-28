@@ -7,12 +7,12 @@ describe('测试用例:', function () {
         this.timeout(60000); // istanbul 测试容易超时
         var rl = readLine('test/fixtures/afile.txt');
 
-        rl.on("line", function (line) {
+        rl.on('line', function (line) {
             should.notEqual(line, null);
             should.notEqual(line, undefined);
         });
 
-        rl.on("end", function () {
+        rl.on('end', function () {
             done();
         });
     });
@@ -43,7 +43,7 @@ describe('测试用例:', function () {
             done();
         });
 
-        rl.on("end", function () {
+        rl.on('end', function () {
             done();
         });
 
@@ -55,22 +55,22 @@ describe('测试用例:', function () {
     it("文件处理中错误测试", function (done) {
         var rl = readLine('test/fixtures/nmbr.txt');
         var lastError;
-        var lineCalls = 0;
+        var lineCalls;
 
-        rl.on("line", function () {
-            lineCalls++;
-            if (lineCalls === 7) {
+        rl.on('line', function (str, idx) {
+            lineCalls = idx;
+            if (idx === 7) {
                 throw new Error('fake error');
             }
         });
 
-        rl.on("error", function (err) {
+        rl.on('error', function (err) {
             if (!lastError) {
                 lastError = err;
             }
         });
 
-        rl.on("end", function () {
+        rl.on('end', function () {
             lastError.message.should.equal('fake error');
             lineCalls.should.equal(9);
             done();
@@ -85,14 +85,12 @@ describe('测试用例:', function () {
             11: 'электричество',
             14: 'дерево'
         };
-        var linecount = 1;
 
         var rl = readLine('test/fixtures/file-in-win1251.txt');
 
-        rl.on('line', function (data) {
+        rl.on('line', function (data, idx) {
             var line = iconv.decode(data, 'win1251');
-            should.ok(!testFileValidationKeywords[linecount] || line.indexOf(testFileValidationKeywords[linecount]) > -1);
-            linecount++;
+            should.ok(!testFileValidationKeywords[idx] || line.indexOf(testFileValidationKeywords[idx]) > -1);
         });
 
         rl.on("end", function () {
