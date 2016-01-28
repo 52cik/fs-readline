@@ -9,16 +9,14 @@
 $ npm install 52cik/fs-readline
 ```
 
+
 ## 使用
 
 ``` js
-var rl = require('fs-readline');
+var readLine = require('fs-readline');
 
-rl('./somefile.txt')
-  .on('line', function(line) {
-    console.log(line.toString());
-  })
-  .on('error', function(e) {
-    // something went wrong
-  });
+var rl = readLine('./somefile.txt');
+rl.on('line', function (line, idx) {
+  console.log('idx', line.toString());
+});
 ```
