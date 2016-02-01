@@ -22,7 +22,7 @@ var readLine = require('fs-readline');
 
 var rl = readLine('./somefile.txt');
 rl.on('line', function (line, idx) {
-  console.log('idx', line.toString());
+  console.log(idx, line.toString());
 });
 ```
 
@@ -52,7 +52,7 @@ var readLine = require('fs-readline');
 
 var rl = readLine('./file.txt', {blankLine: false});
 rl.on('line', function (line, idx) {
-  console.log('idx', line.toString());
+  console.log(idx, line.toString());
 });
 
 // 输出为:
