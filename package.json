@@ -1,7 +1,7 @@
 {
   "name": "fs-readline",
-  "version": "1.0.0",
-  "description": "造轮子系列 -- 文件流按行读取",
+  "version": "1.1.0",
+  "description": "按行读取文件",
   "main": "./index.js",
   "scripts": {
     "test": "mocha --require should --reporter spec",

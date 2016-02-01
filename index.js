@@ -1,35 +1,31 @@
 /**
- * @file fs-readline
+ * @file   fs-readline
  * @author 52cik
- * @email fe.52cik@gmail.com
+ * @email  fe.52cik@gmail.com
  */
 
-var fs = require('fs');
-var EE = require('events').EventEmitter;
 var util = require('util');
+var ReadStream = require('fs').ReadStream;
 
-util.inherits(ReadLine, EE);
-
+util.inherits(ReadLine, ReadStream);
 
 function ReadLine(file, opts) {
-    var self = this;
-
-    if (!(self instanceof ReadLine)) {
+    if (!(this instanceof ReadLine)) {
         return new ReadLine(file, opts);
     }
 
-    EE.call(self);
-
+    var self = this;
     opts = opts || {};
+    opts.highWaterMark = opts.maxLineLength || opts.highWaterMark || 64 * 1024; // 64k
 
-    var maxLineLength = opts.maxLineLength || 8 * 1024; // 8k
-    var lineBuffer = new Buffer(maxLineLength); // 行数据缓存, 超出 8k 的行只保留 8k 数据
+    var blankLine = opts.blankLine === undefined ? true : !!opts.blankLine; // 是否忽略空格
+    var lineBuffer = new Buffer(opts.highWaterMark); // 行数据缓存
     var lineSize = 0; // 行长度
     var lineCount = 1; // 行号
 
-    var input = self.input = fs.createReadStream(file, opts);
+    ReadStream.call(self, file, opts);
 
-    input.on('data', function (chunk) {
+    self.on('data', function (chunk) {
         for (var i = 0, len = chunk.length; i < len; i++) {
             if (chunk[i] === 10) {
                 emitLine(lineSize, lineCount++);
@@ -41,28 +37,15 @@ function ReadLine(file, opts) {
         }
     });
 
-    input.on('end', function () {
-        if (lineSize) {
-            emitLine(lineSize, lineCount++);
-        }
-        self.emit('end');
-    });
-
-    input.on('error', function (err) {
-        self.emit('error', err);
-    });
-
-    input.on('open', function (fd) {
-        self.emit('open', fd);
-    });
-
-    input.on('close', function () {
-        self.emit('close');
+    self.on('end', function () {
+        emitLine(lineSize, lineCount++);
     });
 
     function emitLine(size, idx) {
         try {
-            self.emit('line', lineBuffer.slice(0, size), idx);
+            if (size > 0 || blankLine) { // 忽略空行
+                self.emit('line', lineBuffer.slice(0, size), idx);
+            }
         } catch (e) {
             self.emit('error', e);
         } finally {

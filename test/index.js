@@ -52,7 +52,7 @@ describe('测试用例:', function () {
         });
     });
 
-    it("文件处理中错误测试", function (done) {
+    it('文件处理中错误测试', function (done) {
         var rl = readLine('test/fixtures/nmbr.txt');
         var lastError;
         var lineCalls;
@@ -72,7 +72,21 @@ describe('测试用例:', function () {
 
         rl.on('end', function () {
             lastError.message.should.equal('fake error');
-            lineCalls.should.equal(9);
+            lineCalls.should.equal(10);
+            done();
+        });
+    });
+
+    it('忽略空行', function (done) {
+        var rl = readLine('test/fixtures/nmbr.txt', {blankLine: false});
+        var lineCalls;
+
+        rl.on('line', function (str, idx) {
+            lineCalls = idx;
+        });
+
+        rl.on('end', function () {
+            lineCalls.should.equal(7);
             done();
         });
     });
