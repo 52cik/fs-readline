@@ -1,6 +1,6 @@
 # fs-readline
 
-> 按行读取文件
+> 按行读取文件，基于文件可读流。
 
   [![Linux Build][travis-image]][travis-url] 
   [![Windows Build][appveyor-image]][appveyor-url] 
@@ -66,7 +66,7 @@ rl.on('line', function (line, idx) {
 
 ### maxLineLength
 
-> maxLineLength 行缓冲大小，默认 8k
+> maxLineLength 行缓冲大小，默认 64k
 
 
 
