@@ -42,7 +42,7 @@ describe('测试用例:', function () {
         rl.on('error', function (e) {
             (function () {
                 throw e
-            }).should.throw(/no such file or directory/);
+            }).should.throw(e);
             done();
         });
     });
