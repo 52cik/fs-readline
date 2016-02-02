@@ -5,11 +5,14 @@ describe('测试用例:', function () {
 
     it('行读取测试', function (done) {
         this.timeout(60000); // istanbul 测试容易超时
+
         var rl = readLine('test/fixtures/afile.txt');
 
         rl.on('line', function (line) {
-            should.notEqual(line, null);
-            should.notEqual(line, undefined);
+            line
+                .should.not.equal(null)
+                .and.not.equal(undefined)
+                .and.be.a.Object();
         });
 
         rl.on('end', function () {
@@ -39,15 +42,7 @@ describe('测试用例:', function () {
         rl.on('error', function (e) {
             (function () {
                 throw e
-            }).should.throw(e);
-            done();
-        });
-
-        rl.on('end', function () {
-            done();
-        });
-
-        rl.on('close', function () {
+            }).should.throw(/no such file or directory/);
             done();
         });
     });
@@ -59,6 +54,7 @@ describe('测试用例:', function () {
 
         rl.on('line', function (str, idx) {
             lineCalls = idx;
+
             if (idx === 7) {
                 throw new Error('fake error');
             }
@@ -71,8 +67,8 @@ describe('测试用例:', function () {
         });
 
         rl.on('end', function () {
-            lastError.message.should.equal('fake error');
             lineCalls.should.equal(10);
+            lastError.message.should.equal('fake error');
             done();
         });
     });
@@ -107,7 +103,7 @@ describe('测试用例:', function () {
             should.ok(!testFileValidationKeywords[idx] || line.indexOf(testFileValidationKeywords[idx]) > -1);
         });
 
-        rl.on("end", function () {
+        rl.on('end', function () {
             done();
         });
     });
