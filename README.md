@@ -11,6 +11,12 @@
 ## 安装
 
 ``` sh
+$ npm install fs-readline
+```
+
+或者直接从 GitHub 上安装。
+
+``` sh
 $ npm install 52cik/fs-readline
 ```
 
