@@ -2,8 +2,8 @@
 
 > 按行读取文件，基于文件可读流。
 
-  [![Linux Build][travis-image]][travis-url] 
-  [![Windows Build][appveyor-image]][appveyor-url] 
+  [![Linux Build][travis-image]][travis-url]
+  [![Windows Build][appveyor-image]][appveyor-url]
   [![Coverage Status][coveralls-image]][coveralls-url]
   [![license MIT][license-image]][license-url]
   [![Dependencies][dependencies-image]][dependencies-url]
