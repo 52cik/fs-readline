@@ -17,6 +17,9 @@
     "mocha": "^2.4.2",
     "should": "^8.2.1"
   },
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/52cik/fs-readline.git"

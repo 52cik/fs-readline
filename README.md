@@ -6,6 +6,7 @@
   [![Windows Build][appveyor-image]][appveyor-url] 
   [![Coverage Status][coveralls-image]][coveralls-url]
   [![license MIT][license-image]][license-url]
+  [![Dependencies][dependencies-image]][dependencies-url]
 
 
 ## 安装
@@ -29,6 +30,22 @@ var readLine = require('fs-readline');
 var rl = readLine('./somefile.txt');
 rl.on('line', function (line, idx) {
   console.log(idx, line.toString());
+});
+```
+
+
+## 编码处理
+
+node 支持的编码非常有限, 对于那些不支持的编码可以使用一些第三方库转换, 例如 [iconv-lite][iconv-lite] 模块.
+
+``` js
+var readLine = require('fs-readline');
+var iconv = require('iconv-lite');
+
+var rl = readline('./gbkfile.txt');
+rl.on('line', function (data, idx){
+  var line = iconv.decode(data, 'gbk');
+  console.log(idx, line);
 });
 ```
 
@@ -76,6 +93,7 @@ rl.on('line', function (line, idx) {
 
 
 
+[iconv-lite]: https://github.com/ashtuchkin/iconv-lite
 
 [travis-url]: https://travis-ci.org/52cik/fs-readline
 [travis-image]: https://img.shields.io/travis/52cik/fs-readline/master.svg?label=linux
@@ -88,3 +106,6 @@ rl.on('line', function (line, idx) {
 
 [license-url]: https://opensource.org/licenses/MIT
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
+
+[dependencies-url]: https://david-dm.org/52cik/fs-readline
+[dependencies-image]: https://img.shields.io/david/52cik/fs-readline.svg?style=flat
