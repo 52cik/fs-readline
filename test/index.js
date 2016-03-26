@@ -12,7 +12,7 @@ describe('测试用例:', function () {
             line
                 .should.not.equal(null)
                 .and.not.equal(undefined)
-                .and.be.a.Object();
+                .and.be.a.String();
         });
 
         rl.on('end', function () {
@@ -96,11 +96,23 @@ describe('测试用例:', function () {
             14: 'дерево'
         };
 
-        var rl = readLine('test/fixtures/file-in-win1251.txt');
+        var rl = readLine('test/fixtures/file-in-win1251.txt', {retainBuffer: true});
 
         rl.on('line', function (data, idx) {
             var line = iconv.decode(data, 'win1251');
             should.ok(!testFileValidationKeywords[idx] || line.indexOf(testFileValidationKeywords[idx]) > -1);
+        });
+
+        rl.on('end', function () {
+            done();
+        });
+    });
+
+    it('截断模式测试', function (done) {
+        var rl = readLine('test/fixtures/cut-mode.txt', {cutMode: true, maxLineLength: 4});
+
+        rl.on('line', function (line) {
+            line.should.match(/\d{0,4}/);
         });
 
         rl.on('end', function () {

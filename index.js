@@ -1,7 +1,6 @@
 /**
  * @file   fs-readline
- * @author 52cik
- * @email  fe.52cik@gmail.com
+ * @author 52cik <fe.52cik@gmail.com>
  */
 
 var util = require('util');
@@ -9,17 +8,29 @@ var ReadStream = require('fs').ReadStream;
 
 util.inherits(ReadLine, ReadStream);
 
+var defaults = { // 默认配置
+    maxLineLength: 8 * 1024, // 8k
+    cutMode: false, // 是否截断
+    blankLine: true, // 是否保留空行
+    retainBuffer: false // 是否转为字符串
+};
+
 function ReadLine(file, opts) {
     if (!(this instanceof ReadLine)) {
         return new ReadLine(file, opts);
     }
 
     var self = this;
-    opts = opts || {};
-    opts.highWaterMark = opts.maxLineLength || opts.highWaterMark || 64 * 1024; // 64k
+    opts = Object.assign({}, defaults, opts || {});
 
-    var blankLine = opts.blankLine === undefined ? true : !!opts.blankLine; // 是否忽略空格
-    var lineBuffer = new Buffer(opts.highWaterMark); // 行数据缓存
+    if (!opts.cutMode) { // 非截断模式下读取长度和缓冲区长度一致
+        opts.highWaterMark = opts.maxLineLength;
+    }
+
+    var blankLine = opts.blankLine; // 是否忽略空格
+    var retainBuffer = opts.retainBuffer; // 是否转为字符串
+
+    var lineBuffer = new Buffer(opts.maxLineLength); // 行数据缓存
     var lineSize = 0; // 行长度
     var lineCount = 1; // 行号
 
@@ -44,7 +55,8 @@ function ReadLine(file, opts) {
     function emitLine(size, idx) {
         try {
             if (size > 0 || blankLine) { // 忽略空行
-                self.emit('line', lineBuffer.slice(0, size), idx);
+                var line = lineBuffer.slice(0, size);
+                self.emit('line', retainBuffer ? line : line.toString(), idx);
             }
         } catch (e) {
             self.emit('error', e);
