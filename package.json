@@ -1,6 +1,6 @@
 {
   "name": "fs-readline",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "按行读取文件，基于文件可读流。",
   "main": "./index.js",
   "scripts": {

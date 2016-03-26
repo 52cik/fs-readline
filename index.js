@@ -15,13 +15,20 @@ var defaults = { // 默认配置
     retainBuffer: false // 是否转为字符串
 };
 
+
 function ReadLine(file, opts) {
     if (!(this instanceof ReadLine)) {
         return new ReadLine(file, opts);
     }
 
     var self = this;
-    opts = Object.assign({}, defaults, opts || {});
+    opts = opts || {};
+
+    for (var key in defaults) {
+        if (opts[key] === undefined && defaults.hasOwnProperty(key)) {
+            opts[key] = defaults[key];
+        }
+    }
 
     if (!opts.cutMode) { // 非截断模式下读取长度和缓冲区长度一致
         opts.highWaterMark = opts.maxLineLength;
