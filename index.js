@@ -60,6 +60,10 @@ function ReadLine(file, opts) {
     });
 
     function emitLine(size, idx) {
+        if (self.aborted) {
+            return;
+        }
+
         try {
             if (size > 0 || blankLine) { // 忽略空行
                 var line = lineBuffer.slice(0, size);
@@ -72,5 +76,11 @@ function ReadLine(file, opts) {
         }
     }
 }
+
+ReadLine.prototype.abort = function () {
+    this.aborted = true;
+    this.emit('abort');
+    this.close();
+};
 
 module.exports = ReadLine;

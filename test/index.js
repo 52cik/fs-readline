@@ -120,4 +120,20 @@ describe('测试用例:', function () {
         });
     });
 
+    it('abort 终止输出测试', function (done) {
+        var rl = readLine('test/fixtures/nmbr.txt');
+        var sum = 0;
+
+        rl.on('line', function (line, idx) {
+            sum += Number(line);
+
+            if (idx === 3) {
+                this.abort();
+            }
+        }).on('close', function () {
+            sum.should.be.equal(6);
+            done();
+        });
+    });
+
 });

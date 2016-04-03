@@ -145,6 +145,47 @@ rl.on('line', function (line, idx) {
 非常简单直观，行长度超过 4 的都被截断了，在某些特定的场景下还是比较适用的。
 
 
+## 方法说明
+
+### readLine#abort 终止
+
+假设有个 file.txt 文件，有如下 5 行内容。
+
+```
+// file.txt
+111111
+22
+333333
+444
+555555
+```
+
+``` js
+var readLine = require('fs-readline');
+
+var rl = readLine('./file.txt');
+rl.on('line', function (line, idx) {
+  console.log(idx, line);
+
+  if (idx == 3) { // 第三行后停止输出
+    this.abort(); // 调用终止方法
+  }
+}).on('abort', function () {
+  console.log('读取已终止');
+}).on('close', function () {
+  console.log('文件已关闭');
+});
+
+/**
+ * 输出为:
+ * 1 '1111'
+ * 2 '22'
+ * 3 '3333'
+ * 读取已终止
+ * 文件已关闭
+ */
+```
+
 
 [iconv-lite]: https://github.com/ashtuchkin/iconv-lite
 
