@@ -205,4 +205,4 @@ rl.on('line', function (line, idx) {
 [dependencies-image]: https://img.shields.io/david/52cik/fs-readline.svg?style=flat
 
 [node-url]: https://nodejs.org
-[node-image]: https://img.shields.io/node/v/gh-badges.svg
+[node-image]: https://img.shields.io/badge/node-%3E%3D%200.10.0-brightgreen.svg
